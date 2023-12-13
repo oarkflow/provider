@@ -5,10 +5,10 @@ import (
 	"io"
 	"net/http"
 	"time"
-	
+
 	"github.com/oarkflow/protocol"
 	"github.com/oarkflow/protocol/smpp"
-	
+
 	"github.com/oarkflow/provider"
 )
 
@@ -19,16 +19,16 @@ var sms = protocol.Payload{
 }
 
 var email = protocol.Payload{
-	To:        "s.baniya.np@gmail.com",
-	FromEmail: "s.baniya.np@gmail.com",
-	Subject:   "Test",
-	Message:   "<h1>This is test</h1",
+	To:      "s.baniya.np@gmail.com",
+	From:    "s.baniya.np@gmail.com",
+	Subject: "Test",
+	Message: "<h1>This is test</h1",
 }
 
 var httpPayload = protocol.Payload{
 	URL:    "http://localhost:3000",
 	Method: "POST",
-	Data: map[string]interface{}{
+	Data: map[string]any{
 		"id":         1,
 		"first_name": "Sujit",
 		"last_name":  "Baniya",
@@ -36,7 +36,7 @@ var httpPayload = protocol.Payload{
 }
 
 var smsPayload = protocol.Payload{
-	Data: map[string]interface{}{
+	Data: map[string]any{
 		"sender_id": "SMSto",
 		"to":        "+9779856034616",
 		"message":   "This is test",
@@ -44,18 +44,18 @@ var smsPayload = protocol.Payload{
 }
 
 func main() {
-	// smtpEmailTest()
-	httpSmsTest()
+	smtpEmailTest()
+	// httpSmsTest()
 	// httpSmsClientTest()
 	// smppTest()
 }
 
 func httpSmsTest() {
-	prov := provider.Provider{
+	prov := provider.ServiceProvider{
 		Host:    "https://api.sms.to/sms/estimate",
 		Method:  "POST",
 		AuthUrl: "https://auth.sms.to/oauth/token",
-		AuthData: map[string]interface{}{
+		AuthData: map[string]any{
 			"client_id": "dfdsf",
 			"secret":    "sdfds",
 		},
@@ -78,7 +78,7 @@ func httpSmsTest() {
 }
 
 func httpSmsClientTest() {
-	prov := provider.Provider{
+	prov := provider.ServiceProvider{
 		ServiceType: "http",
 		AuthUrl:     "https://msas.local.intergo.co/oauth/token",
 		Username:    "9fKgec0vCE4rJZOD",
@@ -102,7 +102,7 @@ func httpSmsClientTest() {
 }
 
 func smtpEmailTest() {
-	prov := provider.Provider{
+	prov := provider.ServiceProvider{
 		Name:        "Localhost SMTP",
 		Slug:        "localhost-smtp",
 		Host:        "localhost",
@@ -129,7 +129,7 @@ func smppTest() {
 			fmt.Println(part)
 		}
 	}
-	prov := provider.Provider{
+	prov := provider.ServiceProvider{
 		Name:            "Test-Smpp",
 		Slug:            "test-smpp",
 		Host:            "localhost",

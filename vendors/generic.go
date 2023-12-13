@@ -7,7 +7,7 @@ import (
 	"fmt"
 	"io"
 	stdHttp "net/http"
-	
+
 	"github.com/oarkflow/protocol"
 	"github.com/oarkflow/protocol/http"
 )
@@ -19,9 +19,9 @@ type GenericHttp struct {
 }
 
 func (r *GenericHttp) setupBasicAuth(auth *http.BasicAuth) error {
-	var resp map[string]interface{}
+	var resp map[string]any
 	encoded := base64.StdEncoding.EncodeToString([]byte(fmt.Sprintf("%s:%s", auth.Username, auth.Password)))
-	data := make(map[string]interface{})
+	data := make(map[string]any)
 	if auth.Data != nil {
 		for field, val := range auth.Data {
 			data[field] = val
@@ -75,7 +75,7 @@ func (r *GenericHttp) setupBasicAuth(auth *http.BasicAuth) error {
 }
 
 func (r *GenericHttp) setupOAuth2(auth *http.OAuth2) error {
-	var resp map[string]interface{}
+	var resp map[string]any
 	payload := protocol.Payload{
 		URL:     auth.URL,
 		Method:  "POST",
@@ -107,7 +107,7 @@ func (r *GenericHttp) setupOAuth2(auth *http.OAuth2) error {
 				r.ExpiresIn = int(v.(float64))
 			}
 		}
-		
+
 		r.Config.Headers["Authorization"] = "Bearer " + r.AccessToken
 		return nil
 	}

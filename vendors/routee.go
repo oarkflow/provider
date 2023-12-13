@@ -7,7 +7,7 @@ import (
 	"fmt"
 	"io"
 	stdHttp "net/http"
-	
+
 	"github.com/oarkflow/protocol"
 	"github.com/oarkflow/protocol/http"
 )
@@ -19,12 +19,12 @@ type RouteeHttpSms struct {
 }
 
 func (r *RouteeHttpSms) setupBasicAuth(auth *http.BasicAuth) error {
-	var resp map[string]interface{}
+	var resp map[string]any
 	encoded := base64.StdEncoding.EncodeToString([]byte(fmt.Sprintf("%s:%s", auth.Username, auth.Password)))
 	payload := protocol.Payload{
 		URL:    auth.URL,
 		Method: "FORM",
-		Data: map[string]interface{}{
+		Data: map[string]any{
 			"grant_type": "client_credentials",
 		},
 		Headers: map[string]string{
@@ -78,11 +78,11 @@ func (r *RouteeHttpSms) SetService(provider protocol.Service) {
 
 func (r *RouteeHttpSms) Handle(payload protocol.Payload) (protocol.Response, error) {
 	if payload.Data == nil {
-		payload.Data = map[string]interface{}{
+		payload.Data = map[string]any{
 			"from": payload.From,
 			"to":   payload.To,
 			"body": payload.Message,
-			"callback": map[string]interface{}{
+			"callback": map[string]any{
 				"url":      payload.CallbackURL,
 				"strategy": "OnCompletion",
 			},

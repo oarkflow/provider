@@ -4,7 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"time"
-	
+
 	"github.com/oarkflow/frame/server/render"
 	"github.com/oarkflow/protocol"
 	"github.com/oarkflow/protocol/http"
@@ -13,52 +13,53 @@ import (
 	"github.com/oarkflow/protocol/smtp"
 )
 
-type Provider struct {
-	Name             string                 `json:"name"`
-	Slug             string                 `json:"slug"`
-	Host             string                 `json:"host"`
-	Method           string                 `json:"method"`
-	Port             int                    `json:"port"`
-	Username         string                 `json:"username"`
-	Password         string                 `json:"password"`
-	Token            string                 `json:"token"`
-	AuthType         string                 `json:"auth_type"`
-	AuthUrl          string                 `json:"auth_url"`
-	ClientID         string                 `json:"client_id"`
-	Secret           string                 `json:"secret"`
-	GrantType        string                 `json:"grant_type"`
-	TokenField       string                 `json:"token_field"`
-	ExpiryField      string                 `json:"expiry_field"`
-	Encryption       string                 `json:"encryption"`
-	FromAddress      string                 `json:"from_address"`
-	SystemType       string                 `json:"system_type"`
-	ServiceType      protocol.Type          `json:"service_type"`
-	Service          string                 `json:"service"`
-	FromName         string                 `json:"from_name"`
-	ReadTimeout      time.Duration          `json:"read_timeout"`
-	RequestTimeout   time.Duration          `json:"request_timeout"`
-	WriteTimeout     time.Duration          `json:"write_timeout"`
-	EnquiryInterval  time.Duration          `json:"enquiry_interval"`
-	EnquiryTimeout   time.Duration          `json:"enquiry_timeout"`
-	MaxConnection    int                    `json:"max_connection"`
-	Throttle         int                    `json:"throttle"`
-	UseAllConnection bool                   `json:"use_all_connection"`
-	AutoRebind       bool                   `json:"auto_rebind"`
-	RetryWaitMin     time.Duration          `json:"retry_wait_min"`
-	RetryWaitMax     time.Duration          `json:"retry_wait_max"`
-	RetryMax         int                    `json:"retry_max"`
-	RespReadLimit    int64                  `json:"resp_read_limit"`
-	KillIdleConn     bool                   `json:"kill_idle_conn"`
-	MaxPoolSize      int                    `json:"max_pool_size"`
-	Headers          map[string]string      `json:"headers"`
-	AuthData         map[string]interface{} `json:"auth_data"`
-	AuthHeaders      map[string]string      `json:"auth_headers"`
-	HtmlEngine       *render.HtmlEngine
-	HandlePDU        func(pdu pdu.Body)
-	service          protocol.Service
+type ServiceProvider struct {
+	ServiceProviderID int64             `gorm:"primaryKey" json:"service_provider_id"`
+	Name              string            `gorm:"name" json:"name"`
+	Slug              string            `gorm:"slug" json:"slug"`
+	Host              string            `gorm:"host" json:"host"`
+	Method            string            `gorm:"method" json:"method"`
+	Port              int               `gorm:"port" json:"port"`
+	Username          string            `gorm:"username" json:"username"`
+	Password          string            `gorm:"password" json:"password"`
+	Token             string            `gorm:"token" json:"token"`
+	AuthType          string            `gorm:"auth_type" json:"auth_type"`
+	AuthUrl           string            `gorm:"auth_url" json:"auth_url"`
+	ClientID          string            `gorm:"client_id" json:"client_id"`
+	Secret            string            `gorm:"secret" json:"secret"`
+	GrantType         string            `gorm:"grant_type" json:"grant_type"`
+	TokenField        string            `gorm:"token_field" json:"token_field"`
+	ExpiryField       string            `gorm:"expiry_field" json:"expiry_field"`
+	Encryption        string            `gorm:"encryption" json:"encryption"`
+	FromAddress       string            `gorm:"from_address" json:"from_address"`
+	SystemType        string            `gorm:"system_type" json:"system_type"`
+	ServiceType       protocol.Type     `gorm:"service_type" json:"service_type"`
+	Service           string            `gorm:"service" json:"service"`
+	FromName          string            `gorm:"from_name" json:"from_name"`
+	ReadTimeout       time.Duration     `gorm:"read_timeout" json:"read_timeout"`
+	RequestTimeout    time.Duration     `gorm:"request_timeout" json:"request_timeout"`
+	WriteTimeout      time.Duration     `gorm:"write_timeout" json:"write_timeout"`
+	EnquiryInterval   time.Duration     `gorm:"enquiry_interval" json:"enquiry_interval"`
+	EnquiryTimeout    time.Duration     `gorm:"enquiry_timeout" json:"enquiry_timeout"`
+	MaxConnection     int               `gorm:"max_connection" json:"max_connection"`
+	Throttle          int               `gorm:"throttle" json:"throttle"`
+	UseAllConnection  bool              `gorm:"use_all_connection" json:"use_all_connection"`
+	AutoRebind        bool              `gorm:"auto_rebind" json:"auto_rebind"`
+	RetryWaitMin      time.Duration     `gorm:"retry_wait_min" json:"retry_wait_min"`
+	RetryWaitMax      time.Duration     `gorm:"retry_wait_max" json:"retry_wait_max"`
+	RetryMax          int               `gorm:"retry_max" json:"retry_max"`
+	RespReadLimit     int64             `gorm:"resp_read_limit" json:"resp_read_limit"`
+	KillIdleConn      bool              `gorm:"kill_idle_conn" json:"kill_idle_conn"`
+	MaxPoolSize       int               `gorm:"max_pool_size" json:"max_pool_size"`
+	Headers           map[string]string `json:"headers"`
+	AuthData          map[string]any    `json:"auth_data"`
+	AuthHeaders       map[string]string `json:"auth_headers"`
+	HtmlEngine        *render.HtmlEngine
+	HandlePDU         func(pdu pdu.Body)
+	service           protocol.Service
 }
 
-func (provider *Provider) GetService(messageHandler ...any) (protocol.Service, error) {
+func (provider *ServiceProvider) GetService(messageHandler ...any) (protocol.Service, error) {
 	service, err := NewServiceProvider(provider, messageHandler...)
 	if err != nil {
 		return nil, err
@@ -78,7 +79,7 @@ func (provider *Provider) GetService(messageHandler ...any) (protocol.Service, e
 	return nil, errors.New("no service provider")
 }
 
-func (provider *Provider) Handle(payload protocol.Payload, messageHandler ...any) (protocol.Response, error) {
+func (provider *ServiceProvider) Handle(payload protocol.Payload, messageHandler ...any) (protocol.Response, error) {
 	if provider.service == nil {
 		service, err := provider.GetService(messageHandler...)
 		if err != nil {
@@ -93,7 +94,7 @@ func (provider *Provider) Handle(payload protocol.Payload, messageHandler ...any
 	return provider.service.Handle(payload)
 }
 
-func (provider *Provider) Setup(messageHandler ...any) error {
+func (provider *ServiceProvider) Setup(messageHandler ...any) error {
 	if provider.service == nil {
 		service, err := provider.GetService(messageHandler...)
 		if err != nil {
@@ -104,7 +105,7 @@ func (provider *Provider) Setup(messageHandler ...any) error {
 	return nil
 }
 
-func NewServiceProvider(provider *Provider, messageHandler ...any) (protocol.Service, error) {
+func NewServiceProvider(provider *ServiceProvider, messageHandler ...any) (protocol.Service, error) {
 	switch provider.ServiceType {
 	case protocol.Smtp:
 		if provider.Host == "" || provider.Port == 0 {

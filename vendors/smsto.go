@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"io"
 	stdHttp "net/http"
-	
+
 	"github.com/oarkflow/protocol"
 	"github.com/oarkflow/protocol/http"
 )
@@ -16,11 +16,11 @@ type SmstoHttpSms struct {
 }
 
 func (r *SmstoHttpSms) setupOAuth2(auth *http.BasicAuth) error {
-	var resp map[string]interface{}
+	var resp map[string]any
 	payload := protocol.Payload{
 		URL:    auth.URL,
 		Method: "POST",
-		Data: map[string]interface{}{
+		Data: map[string]any{
 			"client_id": auth.Username,
 			"secret":    auth.Password,
 		},
@@ -45,7 +45,7 @@ func (r *SmstoHttpSms) setupOAuth2(auth *http.BasicAuth) error {
 		if resp["expires"] != nil {
 			r.ExpiresIn = int(resp["expires"].(float64))
 		}
-		
+
 		r.Config.Headers["Authorization"] = "Bearer " + r.AccessToken
 	}
 	return nil
@@ -76,7 +76,7 @@ func (r *SmstoHttpSms) SetService(provider protocol.Service) {
 
 func (r *SmstoHttpSms) Handle(payload protocol.Payload) (protocol.Response, error) {
 	if payload.Data == nil {
-		payload.Data = map[string]interface{}{
+		payload.Data = map[string]any{
 			"sender_id":    payload.From,
 			"to":           payload.To,
 			"message":      payload.Message,
