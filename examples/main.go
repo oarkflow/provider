@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"io"
 	"net/http"
@@ -44,7 +45,14 @@ var smsPayload = protocol.Payload{
 }
 
 func main() {
-	smtpEmailTest()
+	d := []byte(`{"port":"2275"}`)
+	var p provider.ServiceProvider
+	err := json.Unmarshal(d, &p)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println(p)
+	// smtpEmailTest()
 	// httpSmsTest()
 	// httpSmsClientTest()
 	// smppTest()
