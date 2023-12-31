@@ -4,7 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"time"
-	
+
 	"github.com/oarkflow/frame/server/render"
 	"github.com/oarkflow/protocol"
 	"github.com/oarkflow/protocol/http"
@@ -34,7 +34,7 @@ type ServiceProvider struct {
 	Encryption          string            `gorm:"encryption" json:"encryption"`
 	FromAddress         string            `gorm:"from_address" json:"from_address"`
 	SystemType          string            `gorm:"system_type" json:"system_type"`
-	ServiceType         protocol.Type     `gorm:"service_type" json:"service_type"`
+	ServiceType         protocol.Type     `gorm:"service_type" json:"service_type,string"`
 	DeliveryType        uint8             `gorm:"delivery_type" json:"delivery_type"`
 	Service             string            `gorm:"service" json:"service"`
 	FromName            string            `gorm:"from_name" json:"from_name"`
