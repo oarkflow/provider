@@ -15,27 +15,27 @@ import (
 
 type ServiceProvider struct {
 	ServiceProviderID   int64             `gorm:"primaryKey" json:"service_provider_id,string"`
-	Name                string            `gorm:"name" json:"name,string"`
-	Slug                string            `gorm:"slug" json:"slug,string"`
-	Host                string            `gorm:"host" json:"host,string"`
-	Method              string            `gorm:"method" json:"method,string"`
+	Name                string            `gorm:"name" json:"name"`
+	Slug                string            `gorm:"slug" json:"slug"`
+	Host                string            `gorm:"host" json:"host"`
+	Method              string            `gorm:"method" json:"method"`
 	Port                int               `gorm:"port" json:"port,string,string"`
-	Username            string            `gorm:"username" json:"username,string"`
-	Password            string            `gorm:"password" json:"password,string"`
-	Token               string            `gorm:"token" json:"token,string"`
-	AuthType            string            `gorm:"auth_type" json:"auth_type,string"`
-	AuthUrl             string            `gorm:"auth_url" json:"auth_url,string"`
-	ClientID            string            `gorm:"client_id" json:"client_id,string"`
-	Secret              string            `gorm:"secret" json:"secret,string"`
-	GrantType           string            `gorm:"grant_type" json:"grant_type,string"`
-	TokenField          string            `gorm:"token_field" json:"token_field,string"`
-	ExpiryField         string            `gorm:"expiry_field" json:"expiry_field,string"`
-	Encryption          string            `gorm:"encryption" json:"encryption,string"`
-	FromAddress         string            `gorm:"from_address" json:"from_address,string"`
-	SystemType          string            `gorm:"system_type" json:"system_type,string"`
-	ServiceType         protocol.Type     `gorm:"service_type" json:"service_type,string"`
-	Service             string            `gorm:"service" json:"service,string"`
-	FromName            string            `gorm:"from_name" json:"from_name,string"`
+	Username            string            `gorm:"username" json:"username"`
+	Password            string            `gorm:"password" json:"password"`
+	Token               string            `gorm:"token" json:"token"`
+	AuthType            string            `gorm:"auth_type" json:"auth_type"`
+	AuthUrl             string            `gorm:"auth_url" json:"auth_url"`
+	ClientID            string            `gorm:"client_id" json:"client_id"`
+	Secret              string            `gorm:"secret" json:"secret"`
+	GrantType           string            `gorm:"grant_type" json:"grant_type"`
+	TokenField          string            `gorm:"token_field" json:"token_field"`
+	ExpiryField         string            `gorm:"expiry_field" json:"expiry_field"`
+	Encryption          string            `gorm:"encryption" json:"encryption"`
+	FromAddress         string            `gorm:"from_address" json:"from_address"`
+	SystemType          string            `gorm:"system_type" json:"system_type"`
+	ServiceType         protocol.Type     `gorm:"service_type" json:"service_type"`
+	Service             string            `gorm:"service" json:"service"`
+	FromName            string            `gorm:"from_name" json:"from_name"`
 	ReadTimeout         time.Duration     `gorm:"read_timeout" json:"read_timeout,string"`
 	RequestTimeout      time.Duration     `gorm:"request_timeout" json:"request_timeout,string"`
 	WriteTimeout        time.Duration     `gorm:"write_timeout" json:"write_timeout,string"`
@@ -52,9 +52,9 @@ type ServiceProvider struct {
 	RespReadLimit       int64             `gorm:"resp_read_limit" json:"resp_read_limit,string"`
 	KillIdleConn        bool              `gorm:"kill_idle_conn" json:"kill_idle_conn,string"`
 	MaxPoolSize         int               `gorm:"max_pool_size" json:"max_pool_size,string"`
-	Headers             map[string]string `gorm:"headers" json:"headers,string"`
-	AuthData            map[string]any    `gorm:"auth_data" json:"auth_data,string"`
-	AuthHeaders         map[string]string `gorm:"auth_headers" json:"auth_headers,string"`
+	Headers             map[string]string `gorm:"headers" json:"headers"`
+	AuthData            map[string]any    `gorm:"auth_data" json:"auth_data"`
+	AuthHeaders         map[string]string `gorm:"auth_headers" json:"auth_headers"`
 	HtmlEngine          *render.HtmlEngine
 	HandlePDU           func(pdu pdu.Body)
 	service             protocol.Service
