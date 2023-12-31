@@ -14,12 +14,12 @@ import (
 )
 
 type ServiceProvider struct {
-	ServiceProviderID   int64             `gorm:"primaryKey" json:"service_provider_id,string"`
+	ServiceProviderID   int64             `gorm:"primaryKey" json:"service_provider_id"`
 	Name                string            `gorm:"name" json:"name"`
 	Slug                string            `gorm:"slug" json:"slug"`
 	Host                string            `gorm:"host" json:"host"`
 	Method              string            `gorm:"method" json:"method"`
-	Port                int               `gorm:"port" json:"port,string,string"`
+	Port                int               `gorm:"port" json:"port,string"`
 	Username            string            `gorm:"username" json:"username"`
 	Password            string            `gorm:"password" json:"password"`
 	Token               string            `gorm:"token" json:"token"`
