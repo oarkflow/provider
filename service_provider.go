@@ -4,12 +4,13 @@ import (
 	"errors"
 	"fmt"
 	"time"
-
+	
 	"github.com/oarkflow/frame/server/render"
 	"github.com/oarkflow/protocol"
 	"github.com/oarkflow/protocol/http"
 	"github.com/oarkflow/protocol/smpp"
 	"github.com/oarkflow/protocol/smpp/pdu"
+	"github.com/oarkflow/protocol/smpp/pdu/pdufield"
 	"github.com/oarkflow/protocol/smtp"
 )
 
@@ -34,6 +35,7 @@ type ServiceProvider struct {
 	FromAddress         string            `gorm:"from_address" json:"from_address"`
 	SystemType          string            `gorm:"system_type" json:"system_type"`
 	ServiceType         protocol.Type     `gorm:"service_type" json:"service_type"`
+	DeliveryType        uint8             `gorm:"delivery_type" json:"delivery_type"`
 	Service             string            `gorm:"service" json:"service"`
 	FromName            string            `gorm:"from_name" json:"from_name"`
 	ReadTimeout         time.Duration     `gorm:"read_timeout" json:"read_timeout,string"`
@@ -170,6 +172,7 @@ func NewServiceProvider(provider *ServiceProvider, messageHandler ...any) (proto
 			UseAllConnection: provider.UseAllConnection,
 			HandlePDU:        provider.HandlePDU,
 			AutoRebind:       provider.AutoRebind,
+			Register:         pdufield.DeliverySetting(provider.DeliveryType),
 			OnMessageReport:  onMessageReport,
 		})
 	case protocol.Http:
