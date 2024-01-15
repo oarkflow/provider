@@ -3,8 +3,8 @@ module github.com/oarkflow/provider
 go 1.21.0
 
 require (
-	github.com/oarkflow/frame v0.0.57
-	github.com/oarkflow/protocol v0.0.10
+	github.com/oarkflow/frame v0.0.58
+	github.com/oarkflow/protocol v0.0.11
 )
 
 require (
