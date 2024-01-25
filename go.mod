@@ -4,7 +4,7 @@ go 1.21.0
 
 require (
 	github.com/oarkflow/frame v0.0.58
-	github.com/oarkflow/protocol v0.0.13
+	github.com/oarkflow/protocol v0.0.14
 )
 
 require (
