@@ -122,7 +122,7 @@ func NewServiceProvider(provider *ServiceProvider, messageHandler ...any) (proto
 			FromAddress: provider.FromAddress,
 			FromName:    provider.FromName,
 			Port:        provider.Port,
-		}, provider.HtmlEngine)
+		}, provider.HtmlEngine, provider.Service)
 	case protocol.Smpp:
 		if provider.Host == "" || provider.Port == 0 {
 			return nil, errors.New("no host detail")
@@ -174,7 +174,7 @@ func NewServiceProvider(provider *ServiceProvider, messageHandler ...any) (proto
 			AutoRebind:       provider.AutoRebind,
 			Register:         pdufield.DeliverySetting(provider.DeliveryType),
 			OnMessageReport:  onMessageReport,
-		})
+		}, provider.Service)
 	case protocol.Http:
 		var auth http.Auth
 		if provider.AuthType == "oauth2" {
@@ -226,7 +226,7 @@ func NewServiceProvider(provider *ServiceProvider, messageHandler ...any) (proto
 			ReqPerSec:     provider.Throttle,
 			Headers:       provider.Headers,
 			Auth:          auth,
-		})
+		}, provider.Service)
 	default:
 		return nil, errors.New("invalid service ty[e")
 	}
